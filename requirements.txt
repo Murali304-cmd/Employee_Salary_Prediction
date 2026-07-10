@@ -4,3 +4,4 @@ pandas
 numpy
 random 
 pickle
+streamlit
