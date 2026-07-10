@@ -138,23 +138,23 @@ with col2:
 # -----------------------------------------------------
 # Prediction
 # -----------------------------------------------------
-if st.button("💰 Predict Salary"):
+# Automatically predict
+x = np.array([[
+    age,
+    gender_dict[gender],
+    department_dict[department],
+    job_dict[job],
+    experience,
+    education_dict[education],
+    location_dict[location]
+]])
 
-    x = np.array([[
-        age,
-        gender_dict[gender],
-        department_dict[department],
-        job_dict[job],
-        experience,
-        education_dict[education],
-        location_dict[location]
-    ]])
+x = scaler.transform(x)
+prediction = float(model.predict(x)[0])
 
-    x = scaler.transform(x)
+st.success(f"### 💰 Predicted Salary : {prediction:,.2f}")
 
-    prediction = float(model.predict(x)[0])
 
-    st.success(f"### 💰 Predicted Salary : {prediction:,.2f}")
 
     # Salary Level
     if prediction < 40000:
