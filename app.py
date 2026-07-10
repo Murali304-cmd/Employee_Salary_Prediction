@@ -139,7 +139,11 @@ with col2:
 # Prediction
 # -----------------------------------------------------
 # Automatically predict
-  x = np.array([[
+# -----------------------------------------------------
+# Prediction (Automatic)
+# -----------------------------------------------------
+
+x = np.array([[
     age,
     gender_dict[gender],
     department_dict[department],
@@ -147,167 +151,113 @@ with col2:
     experience,
     education_dict[education],
     location_dict[location]
-   ]])
+]])
 
-    x = scaler.transform(x)
-    prediction = float(model.predict(x)[0])
+x = scaler.transform(x)
+prediction = float(model.predict(x)[0])
 
-    st.success(f"### 💰 Predicted Salary : {prediction:,.2f}")
+st.success(f"### 💰 Predicted Salary : {prediction:,.2f}")
 
+# Salary Level
+if prediction < 40000:
+    level = "🟢 Entry Level"
+elif prediction < 70000:
+    level = "🔵 Mid Level"
+elif prediction < 100000:
+    level = "🟠 Senior Level"
+else:
+    level = "👑 Executive Level"
 
+# Next Year Salary
+next_year = prediction * 1.10
 
-    # Salary Level
-    if prediction < 40000:
-        level = "🟢 Entry Level"
-    elif prediction < 70000:
-        level = "🔵 Mid Level"
-    elif prediction < 100000:
-        level = "🟠 Senior Level"
-    else:
-        level = "👑 Executive Level"
+colA, colB, colC = st.columns(3)
 
-    # Next Year Salary
-    next_year = prediction * 1.10
+colA.metric("Current Salary", f"{prediction:,.2f}")
+colB.metric("Next Year Salary", f"{next_year:,.2f}", "10%")
+colC.metric("Career Level", level)
 
-    colA, colB, colC = st.columns(3)
+# Employee Summary
+st.subheader("👨 Employee Summary")
 
-    colA.metric("Current Salary", f"{prediction:,.2f}")
-    colB.metric("Next Year Salary", f"{next_year:,.2f}", "10%")
-    colC.metric("Career Level", level)
-
-    # Employee Summary
-    st.subheader("👨 Employee Summary")
-
-    summary = pd.DataFrame({
-        "Field": [
-            "Age",
-            "Gender",
-            "Department",
-            "Job Title",
-            "Experience",
-            "Education",
-            "Location"
-        ],
-        "Value": [
-            age,
-            gender,
-            department,
-            job,
-            f"{experience} Years",
-            education,
-            location
-        ]
-    })
-
-    st.dataframe(summary, use_container_width=True)
-
-    # Future Salary Prediction
-    st.subheader("📈 Future Salary Prediction")
-
-    salary = prediction
-
-    years = []
-    salaries = []
-
-    for i in range(1, 6):
-        salary *= 1.10
-        years.append(f"Year {i}")
-        salaries.append(salary)
-
-    future_df = pd.DataFrame({
-        "Year": years,
-        "Estimated Salary": salaries
-    })
-
-    st.dataframe(future_df, use_container_width=True)
-
-    # Salary Growth Chart
-    fig, ax = plt.subplots(figsize=(7,4))
-
-    ax.plot(years, salaries, marker="o", linewidth=3)
-
-    ax.set_title("Salary Growth")
-    ax.set_xlabel("Year")
-    ax.set_ylabel("Salary ")
-
-    st.pyplot(fig)
-
-    # Career Progress
-    st.subheader("⭐ Career Progress")
-
-    progress = min(int((experience / 20) * 100), 100)
-
-    st.progress(progress)
-
-    # Quotes
-    quotes = [
-
-        "🚀 Keep learning to unlock higher salaries.",
-
-        "💼 Skills create opportunities.",
-
-        "📈 Consistency drives career growth.",
-
-        "🌟 Invest in your knowledge.",
-
-        "🏆 Great careers are built one skill at a time.",
-
-        "💡 Every certification increases your value.",
-
-        "🔥 Learn today, lead tomorrow.",
-
-        "🎯 Hard work beats talent when talent doesn't work hard.",
-
-        "📚 Never stop learning.",
-
-        "🚀 Success comes from continuous improvement."
-
+summary = pd.DataFrame({
+    "Field": [
+        "Age",
+        "Gender",
+        "Department",
+        "Job Title",
+        "Experience",
+        "Education",
+        "Location"
+    ],
+    "Value": [
+        age,
+        gender,
+        department,
+        job,
+        f"{experience} Years",
+        education,
+        location
     ]
+})
 
-    st.info(random.choice(quotes))
+st.dataframe(summary, use_container_width=True)
 
-    # CSV Download
-    csv = future_df.to_csv(index=False).encode()
+# Future Salary Prediction
+st.subheader("📈 Future Salary Prediction")
 
-    st.download_button(
-        "📥 Download Prediction Report",
-        csv,
-        "salary_prediction.csv",
-        "text/csv"
-    )
+salary = prediction
+years = []
+salaries = []
 
-# -----------------------------------------------------
-# Sidebar
-# -----------------------------------------------------
-st.sidebar.title("📊 Model Information")
+for i in range(1, 6):
+    salary *= 1.10
+    years.append(f"Year {i}")
+    salaries.append(salary)
 
-st.sidebar.success("Random Forest Regressor")
+future_df = pd.DataFrame({
+    "Year": years,
+    "Estimated Salary": salaries
+})
 
-st.sidebar.write("Scaler : StandardScaler")
+st.dataframe(future_df, use_container_width=True)
 
-st.sidebar.write("Target : Salary")
+# Salary Growth Chart
+fig, ax = plt.subplots(figsize=(7, 4))
+ax.plot(years, salaries, marker="o", linewidth=3)
+ax.set_title("Salary Growth")
+ax.set_xlabel("Year")
+ax.set_ylabel("Salary")
+st.pyplot(fig)
 
-st.sidebar.markdown("---")
+# Career Progress
+st.subheader("⭐ Career Progress")
 
-st.sidebar.write("### Features Used")
+progress = min(int((experience / 20) * 100), 100)
+st.progress(progress)
 
-st.sidebar.write("""
-- Age
-- Gender
-- Department
-- Job Title
-- Experience
-- Education
-- Location
-""")
+# Quotes
+quotes = [
+    "🚀 Keep learning to unlock higher salaries.",
+    "💼 Skills create opportunities.",
+    "📈 Consistency drives career growth.",
+    "🌟 Invest in your knowledge.",
+    "🏆 Great careers are built one skill at a time.",
+    "💡 Every certification increases your value.",
+    "🔥 Learn today, lead tomorrow.",
+    "🎯 Hard work beats talent when talent doesn't work hard.",
+    "📚 Never stop learning.",
+    "🚀 Success comes from continuous improvement."
+]
 
-# -----------------------------------------------------
-# Footer
-# -----------------------------------------------------
-st.markdown("---")
+st.info(random.choice(quotes))
 
-st.caption(
-    "💼 Employee Salary Prediction System | "
-    "Machine Learning Project | "
-    "Developed using Streamlit"
+# CSV Download
+csv = future_df.to_csv(index=False).encode()
+
+st.download_button(
+    "📥 Download Prediction Report",
+    csv,
+    "salary_prediction.csv",
+    "text/csv"
 )
