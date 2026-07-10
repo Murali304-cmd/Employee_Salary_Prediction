@@ -139,7 +139,7 @@ with col2:
 # Prediction
 # -----------------------------------------------------
 # Automatically predict
-x = np.array([[
+  x = np.array([[
     age,
     gender_dict[gender],
     department_dict[department],
@@ -147,12 +147,12 @@ x = np.array([[
     experience,
     education_dict[education],
     location_dict[location]
-]])
+   ]])
 
-x = scaler.transform(x)
-prediction = float(model.predict(x)[0])
+    x = scaler.transform(x)
+    prediction = float(model.predict(x)[0])
 
-st.success(f"### 💰 Predicted Salary : {prediction:,.2f}")
+    st.success(f"### 💰 Predicted Salary : {prediction:,.2f}")
 
 
 
