@@ -154,7 +154,7 @@ if st.button("💰 Predict Salary"):
 
     prediction = float(model.predict(x)[0])
 
-    st.success(f"### 💰 Predicted Salary : ${prediction:,.2f}")
+    st.success(f"### 💰 Predicted Salary : {prediction:,.2f}")
 
     # Salary Level
     if prediction < 40000:
@@ -171,8 +171,8 @@ if st.button("💰 Predict Salary"):
 
     colA, colB, colC = st.columns(3)
 
-    colA.metric("Current Salary", f"${prediction:,.2f}")
-    colB.metric("Next Year Salary", f"${next_year:,.2f}", "10%")
+    colA.metric("Current Salary", f"{prediction:,.2f}")
+    colB.metric("Next Year Salary", f"{next_year:,.2f}", "10%")
     colC.metric("Career Level", level)
 
     # Employee Summary
@@ -228,7 +228,7 @@ if st.button("💰 Predict Salary"):
 
     ax.set_title("Salary Growth")
     ax.set_xlabel("Year")
-    ax.set_ylabel("Salary ($)")
+    ax.set_ylabel("Salary ")
 
     st.pyplot(fig)
 
