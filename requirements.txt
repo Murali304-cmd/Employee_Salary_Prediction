@@ -1,7 +1,6 @@
-scikit-learn
-matploitlib
-pandas
-numpy
-random 
-pickle
 streamlit
+numpy
+pandas
+matplotlib
+scikit-learn
+joblib
